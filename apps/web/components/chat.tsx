@@ -95,8 +95,8 @@ export function Chat({
         toast.error(t.settings.aiModelNoChatModel)
         return
       }
-      toast.error("发送失败", {
-        description: error.message || "请稍后重试",
+      toast.error(t.chatMessages.sendFailed, {
+        description: error.message || t.chatMessages.retryLater,
       })
     },
   })

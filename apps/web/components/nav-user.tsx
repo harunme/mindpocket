@@ -104,7 +104,7 @@ export function NavUser({
                     router.push("/login")
                     router.refresh()
                   } catch {
-                    toast.error("退出失败，请稍后重试")
+                    toast.error(t.feedback.logoutFailed)
                   }
                 }}
               >
