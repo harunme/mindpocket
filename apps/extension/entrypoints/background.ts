@@ -23,6 +23,10 @@ export default defineBackground(() => {
       handleSavePage(message.payload).then(sendResponse)
       return true
     }
+    if (message.type === "START_DEVICE_POLL") {
+      handleDevicePoll(message.deviceCode, message.expiresIn, message.interval).then(sendResponse)
+      return true
+    }
   })
 })
 
@@ -71,6 +75,37 @@ async function handleSavePage(payload?: unknown) {
     return { success: true, data: result.data }
   } catch (err) {
     await notify("保存失败", String(err))
+    return { success: false, error: String(err) }
+  }
+}
+
+// 后台轮询设备授权，popup 关闭后仍然继续
+async function handleDevicePoll(deviceCode: string, expiresIn: number, interval: number) {
+  try {
+    const { pollDeviceToken, completeDeviceAuth } = await import("../lib/auth-client")
+    const timeoutAt = Date.now() + expiresIn * 1000
+    let intervalMs = interval * 1000
+
+    while (Date.now() < timeoutAt) {
+      await new Promise((r) => setTimeout(r, intervalMs))
+      const result = await pollDeviceToken(deviceCode, intervalMs)
+
+      if (result.status === "pending") {
+        continue
+      }
+      if (result.status === "slow_down") {
+        intervalMs = result.intervalMs
+        continue
+      }
+
+      // 授权成功，持久化 token 和用户信息
+      const user = await completeDeviceAuth(result.accessToken)
+      await notify("MindPocket 登录成功", `欢迎，${user.name || user.email}`)
+      return { success: true, user }
+    }
+
+    return { success: false, error: "验证码已过期" }
+  } catch (err) {
     return { success: false, error: String(err) }
   }
 }

@@ -11,6 +11,7 @@ import { user as userTable } from "@/db/schema/auth"
 
 const DEFAULT_APP_URL = "http://127.0.0.1:3000"
 const CLI_CLIENT_ID = "mindpocket-cli"
+const EXT_CLIENT_ID = "mindpocket-extension"
 
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL,
@@ -67,7 +68,7 @@ export const auth = betterAuth({
       interval: "5s",
       verificationUri: "/device",
       validateClient(clientId) {
-        return clientId === CLI_CLIENT_ID
+        return clientId === CLI_CLIENT_ID || clientId === EXT_CLIENT_ID
       },
     }),
   ],
