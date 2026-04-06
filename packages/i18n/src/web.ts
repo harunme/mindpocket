@@ -104,6 +104,9 @@ const zh = {
     fileParsingPlatformWechat: "微信公众号",
     fileParsingPlatformBilibili: "哔哩哔哩",
     fileParsingPlatformXiaohongshu: "小红书",
+    bookmarkView: "收藏视图",
+    viewGrid: "网格",
+    viewList: "列表",
   },
   searchDialog: {
     title: "全局搜索",
@@ -454,6 +457,9 @@ const en: WebTranslationDict = {
     fileParsingPlatformWechat: "WeChat Official Account",
     fileParsingPlatformBilibili: "Bilibili",
     fileParsingPlatformXiaohongshu: "Xiaohongshu",
+    bookmarkView: "Bookmark View",
+    viewGrid: "Grid",
+    viewList: "List",
   },
   searchDialog: {
     title: "Global Search",
